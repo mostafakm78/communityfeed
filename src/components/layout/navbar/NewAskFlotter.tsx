@@ -7,7 +7,7 @@ const NewAskFlotter = ({ disabled }: { disabled: boolean }) => {
   }
 
   return (
-    <Button className="fixed h-12 w-18 rounded-lg shadow left-6 bottom-6 text-xs" asChild>
+    <Button className="fixed h-12 z-100 w-18 rounded-lg shadow left-6 bottom-6 text-xs" asChild>
       <Link href="/new-answer">+ ثبت سوال</Link>
     </Button>
   );
