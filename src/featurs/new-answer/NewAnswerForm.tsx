@@ -47,7 +47,7 @@ export function NewAnswerForm() {
   }
 
   return (
-    <form className="w-2/3 px-6 pb-10" id="new-answer-form" onSubmit={form.handleSubmit(onSubmit)}>
+    <form className="xl:w-2/3 w-full px-6 pb-10" id="new-answer-form" onSubmit={form.handleSubmit(onSubmit)}>
       <span className='text-2xl font-bold block mb-8'>ساخت سوال</span>
       <FieldGroup>
         <Controller

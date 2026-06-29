@@ -6,11 +6,13 @@ const TagsData = [
   { id: 2, name: 'typescript' },
   { id: 3, name: 'javascript' },
   { id: 4, name: 'css' },
+  { id: 5, name: 'css' },
+  { id: 6, name: 'css' },
 ];
 
 const Tags = () => {
   return (
-    <div className="space-x-2">
+    <div className="space-x-2 space-y-2">
       {TagsData.map((tag) => (
         <Badge key={tag.id} asChild className="py-3.5 px-3 bg-blue-800/70">
           <Link href={`/?tag=${tag}`}>{tag.name}</Link>
