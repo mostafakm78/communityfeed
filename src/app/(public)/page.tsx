@@ -6,8 +6,8 @@ export default function Home() {
   return (
     <div className="container mx-auto">
       <HeaderTitle />
-      <div className="flex items-start">
-        <div className="lg:w-3/12 hidden sticky top-10">
+      <div className="flex xl:flex-row flex-col items-start">
+        <div className="xl:w-3/12 w-full xl:sticky xl:top-10">
           <QuestionsFilter />
         </div>
         <div className="xl:w-9/12 w-full pb-10">
