@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Vazirmatn } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/navbar/Navbar';
+import ToasterLayout from '@/providers/ToastProvider';
 
 const vazirmatn = Vazirmatn({
   variable: '--font-vazir',
@@ -22,7 +23,7 @@ export default function RootLayout({
     <html lang="fa" dir="rtl" className={`${vazirmatn.variable} h-full antialiased`}>
       <body>
         <Navbar />
-        <main>{children}</main>
+        <ToasterLayout>{children}</ToasterLayout>
       </body>
     </html>
   );
