@@ -1,3 +1,5 @@
+import Navbar from '@/components/layout/navbar/Navbar';
+
 export default function Home() {
-  return <div>سلام</div>;
+  return <h1>بخش پرسش و پاسخ</h1>;
 }
