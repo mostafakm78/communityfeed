@@ -3,6 +3,7 @@ import { Vazirmatn } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/navbar/Navbar';
 import ToasterLayout from '@/providers/ToastProvider';
+import QueryProvider from '@/providers/QueryProvider';
 
 const vazirmatn = Vazirmatn({
   variable: '--font-vazir',
@@ -22,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" className={`${vazirmatn.variable} h-full antialiased`}>
       <body>
-        <Navbar />
-        <ToasterLayout>{children}</ToasterLayout>
+        <QueryProvider>
+          <Navbar />
+          <ToasterLayout>{children}</ToasterLayout>
+        </QueryProvider>
       </body>
     </html>
   );

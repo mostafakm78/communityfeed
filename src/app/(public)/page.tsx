@@ -1,6 +1,9 @@
+import { Suspense } from 'react';
 import HeaderTitle from '@/components/shared/HeaderTitle';
 import QuestionsFilter from '@/featurs/questions/components/questionfilters/QuestionsFilters';
 import QuestionsList from '@/featurs/questions/components/questionslist/QuestionsList';
+import QuestionsSkeleton from '@/featurs/questions/components/questionslist/QuestionsSkeleton';
+
 
 export default function Home() {
   return (
@@ -11,7 +14,9 @@ export default function Home() {
           <QuestionsFilter />
         </div>
         <div className="xl:w-9/12 w-full pb-10">
-          <QuestionsList />
+          <Suspense fallback={<QuestionsSkeleton />}>
+            <QuestionsList />
+          </Suspense>
         </div>
       </div>
     </div>
