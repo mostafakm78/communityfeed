@@ -1,27 +1,45 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
-const TagsData = [
-  { id: 1, name: 'react' },
-  { id: 2, name: 'typescript' },
-  { id: 3, name: 'javascript' },
-  { id: 4, name: 'css' },
-  { id: 5, name: 'next.js' },
-  { id: 6, name: 'tailwind' },
-  { id: 7, name: 'html' },
-  { id: 8, name: 'vite' },
-  { id: 9, name: 'vue' },
-  { id: 10, name: 'angular' },
-];
+const Tags = ({ tags }: { tags: string[] }) => {
+  const searchParams = useSearchParams();
+  const activeTags = searchParams.getAll('tag');
 
-const Tags = () => {
+  const buildToggleHref = (tag: string) => {
+    const nextTags = activeTags.includes(tag) ? activeTags.filter((t) => t !== tag) : [...activeTags, tag];
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('tag');
+    nextTags.forEach((t) => params.append('tag', t));
+
+    return `/?${params.toString()}`;
+  };
+
   return (
     <div className="space-x-2 space-y-2">
-      {TagsData.map((tag) => (
-        <Badge key={tag.id} asChild className="py-3.5 px-3 bg-blue-800/70">
-          <Link href={`/?tag=${tag}`}>{tag.name}</Link>
-        </Badge>
-      ))}
+      {tags.map((tag) => {
+        const isActive = activeTags.includes(tag);
+        const href = buildToggleHref(tag);
+
+        return (
+          <Badge
+            key={tag}
+            className={cn('py-3.5 px-3 bg-blue-800/70 gap-1.5', isActive && 'bg-blue-500')}
+          >
+            {isActive ? <span>{tag}</span> : <Link href={href}>{tag}</Link>}
+            {isActive && (
+              <Link href={href} aria-label="حذف فیلتر" className="hover:opacity-70">
+                <X size={12} />
+              </Link>
+            )}
+          </Badge>
+        );
+      })}
     </div>
   );
 };
