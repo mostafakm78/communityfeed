@@ -26,3 +26,20 @@ export type QuestionsApiResponse = {
   previous: string | null;
   results: QuestionApiItem[];
 };
+
+export type SearchQuestionItem = {
+  id: number;
+  content: string;
+  study_field: string | null;
+  book?: string;
+  user: {
+    full_name: string;
+  };
+};
+
+export type SearchQuestionsResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: SearchQuestionItem[];
+};
