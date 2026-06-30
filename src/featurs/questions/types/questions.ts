@@ -2,9 +2,10 @@ export type QuestionCardProps = {
   id: number;
   question: string;
   author: string;
-  tags?: string[];
   created_at: string;
   answers: number;
+  study_field: string;
+  book?: string;
 };
 
 export type QuestionApiItem = {
@@ -15,6 +16,8 @@ export type QuestionApiItem = {
   user: {
     full_name: string;
   };
+  study_field: string;
+  book?: string;
 };
 
 export type QuestionsApiResponse = {

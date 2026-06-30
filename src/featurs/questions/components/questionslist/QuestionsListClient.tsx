@@ -47,6 +47,8 @@ const QuestionsListClient = () => {
       author: item.user.full_name,
       answers: item.answers.length,
       created_at: toRelativeTime(item.created_at),
+      study_field: item.study_field,
+      book: item.book,
     }))
   );
 
