@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-const Tags = ({ tags }: { tags: string[] }) => {
+const Books = ({ books }: { books: string[] }) => {
   const searchParams = useSearchParams();
   const activeTags = searchParams.getAll('tag');
 
@@ -22,16 +22,16 @@ const Tags = ({ tags }: { tags: string[] }) => {
 
   return (
     <div className="space-x-2 space-y-2">
-      {tags.map((tag) => {
-        const isActive = activeTags.includes(tag);
-        const href = buildToggleHref(tag);
+      {books.map((book) => {
+        const isActive = activeTags.includes(book);
+        const href = buildToggleHref(book);
 
         return (
           <Badge
-            key={tag}
+            key={book}
             className={cn('py-3.5 px-3 bg-blue-800/70 gap-1.5', isActive && 'bg-blue-500')}
           >
-            {isActive ? <span>{tag}</span> : <Link href={href}>{tag}</Link>}
+            {isActive ? <span>{book}</span> : <Link href={href}>{book}</Link>}
             {isActive && (
               <Link href={href} aria-label="حذف فیلتر" className="hover:opacity-70">
                 <X size={12} />
@@ -44,4 +44,4 @@ const Tags = ({ tags }: { tags: string[] }) => {
   );
 };
 
-export default Tags;
+export default Books;

@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator';
-import Tags from './Tags';
+import Books from './Books';
 import QuestionInfo from './QuestionInfo';
 
 type QuestionCardProps = {
@@ -16,7 +16,7 @@ const QuestionCard = ({ content, book, author, created_at }: QuestionCardProps) 
         <span className="w-full">{content}</span>
         <div className="flex flex-col gap-y-4 mt-auto justify-between">
           <Separator className="mt-2 xl:mt-0" orientation="horizontal" />
-          <Tags book={book} />
+          <Books book={book} />
           <QuestionInfo author={author} created_at={created_at} />
         </div>
       </article>

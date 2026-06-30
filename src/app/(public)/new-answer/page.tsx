@@ -1,5 +1,5 @@
 import HeaderTitle from '@/components/shared/HeaderTitle';
-import { NewAnswerForm } from '@/featurs/new-answer/NewAnswerForm';
+import { NewAnswerForm } from '@/featurs/new-answer/components/NewAnswerForm';
 
 export default function NewAnswer() {
   return (

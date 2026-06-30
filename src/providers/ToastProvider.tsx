@@ -10,7 +10,7 @@ export default function ToasterLayout({
   return (
     <main>
       {children}
-      <Toaster />
+      <Toaster/>
     </main>
   );
 }

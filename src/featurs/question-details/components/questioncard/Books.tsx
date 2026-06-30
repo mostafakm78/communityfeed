@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 
-const Tags = ({ book }: { book?: string }) => {
+const Books = ({ book }: { book?: string }) => {
   if (!book) return null;
 
   return (
@@ -13,4 +13,4 @@ const Tags = ({ book }: { book?: string }) => {
   );
 };
 
-export default Tags;
+export default Books;

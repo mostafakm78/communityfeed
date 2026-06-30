@@ -2,53 +2,57 @@
 
 import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { Button } from '@/components/ui/button';
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from '@/components/ui/input-group';
-import TagsInput from './TagsInput';
 import { toPersian } from '@/lib/utils';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { SelectBook } from './SelectBook';
+import { postQuestion } from '../api/postQuestion';
 
 const formSchema = z.object({
   title: z.string().min(10, 'عنوان نمیتواند کمتر از ١٠ کارکتر باشد').max(120, 'عنوان نمیتواند بیشتر از ١٢٠ کارکتر باشد'),
   description: z.string().min(50, 'توضیحات باید حداقل ٥٠ کارکتر باشد').max(3000, 'توضیحات شما نباید بیشتر از ٣٠٠٠ باشد'),
-  tags: z.array(z.string().min(1)).min(1, 'حداقل یک تگ اضافه کنید').max(5, 'حداکثر ٥ تگ مجاز است'),
+  book: z.string().min(1, 'لطفاً یک کتاب انتخاب کنید'),
 });
 
 export function NewAnswerForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
       description: '',
-      tags: [],
+      book: '',
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: postQuestion,
+    onSuccess: () => {
+      toast.success('سوال شما با موفقیت ثبت شد');
+      form.reset();
+      router.push('/');
+    },
+    onError: () => {
+      toast.error('ارسال سوال با خطا مواجه شد. لطفاً دوباره تلاش کنید.', { position: 'top-center' });
     },
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    toast('You submitted the following values:', {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: 'bottom-right',
-      classNames: {
-        content: 'flex flex-col gap-2',
-      },
-      style: {
-        '--border-radius': 'calc(var(--radius)  + 4px)',
-      } as React.CSSProperties,
-    });
+    mutate({ content: `${data.title}\n\n${data.description}`, book: data.book });
   }
 
   return (
     <form className="xl:w-2/3 w-full px-6 pb-10" id="new-answer-form" onSubmit={form.handleSubmit(onSubmit)}>
-      <span className='text-2xl font-bold block mb-8'>ساخت سوال</span>
+      <span className="text-2xl font-bold block mb-8">ساخت سوال</span>
       <FieldGroup>
         <Controller
           name="title"
@@ -82,27 +86,25 @@ export function NewAnswerForm() {
           )}
         />
         <Controller
-          name="tags"
+          name="book"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <div className="flex items-center justify-between">
-                <FieldLabel className="text-xl" htmlFor="form-tags">
-                  تگ‌ها
-                </FieldLabel>
-                <span className="text-sm text-muted-foreground">{toPersian(field.value.length)} / ۵</span>
-              </div>
-              <TagsInput value={field.value} onChange={field.onChange} />
-              <FieldDescription className="text-right">با زدن دکمه Enter تگ خود را وارد کنید.</FieldDescription>
+              <FieldLabel className="text-xl" htmlFor="form-book">
+                کتاب
+              </FieldLabel>
+              <SelectBook value={field.value} onValueChange={field.onChange} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
       </FieldGroup>
       <div className="w-full flex items-center justify-between mt-10">
-        <Button type='submit' className="h-12.5 w-37.5 text-xl">ارسال سوال</Button>
-        <Button variant="outline" className="h-12.5 w-37.5 text-xl">
-          انصراف
+        <Button type="submit" disabled={isPending} className="h-12.5 w-37.5 text-xl">
+          {isPending ? 'در حال ارسال...' : 'ارسال سوال'}
+        </Button>
+        <Button asChild type="button" variant="outline" className="h-12.5 w-37.5 text-xl">
+          <Link href="/">انصراف</Link>
         </Button>
       </div>
     </form>
