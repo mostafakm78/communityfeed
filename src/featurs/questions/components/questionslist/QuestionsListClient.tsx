@@ -9,7 +9,7 @@ import { QuestionApiItem, QuestionCardProps } from '../../types/questions';
 import QuestionCard from './questioncard/QuestionCard';
 import { Spinner } from '@/components/ui/spinner';
 
-const QuestionsListClient = () => {
+const QuestionsListClient = ({ now }: { now: number }) => {
   const searchParams = useSearchParams();
   const sortby = searchParams.get('sortby') ?? 'newest';
   const tags = searchParams.getAll('tag');
@@ -69,7 +69,7 @@ const QuestionsListClient = () => {
     question: item.content,
     author: item.user.full_name,
     answers: item.answers.length,
-    created_at: toRelativeTime(item.created_at),
+    created_at: toRelativeTime(item.created_at, now),
     study_field: item.study_field,
     book: item.book,
   }));

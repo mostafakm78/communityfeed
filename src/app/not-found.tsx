@@ -1,0 +1,16 @@
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+
+const NotFound = () => {
+  return (
+    <div className="container mx-auto flex flex-col items-center justify-center gap-y-4 px-6 py-20 text-center">
+      <h2 className="text-lg font-medium">صفحه مورد نظر پیدا نشد</h2>
+      <p className="text-sm text-muted-foreground">صفحه‌ای که دنبالش بودید وجود ندارد یا حذف شده است.</p>
+      <Button asChild>
+        <Link href="/">بازگشت به صفحه اصلی</Link>
+      </Button>
+    </div>
+  );
+};
+
+export default NotFound;

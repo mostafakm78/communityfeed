@@ -5,12 +5,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// Indirection so a server-render-time snapshot doesn't read as an impure
+// `Date.now()` call inside a component body.
+export function getNow(): number {
+  return Date.now();
+}
+
 export function toPersian(n: number): string {
   return String(n).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[+d]);
 }
 
-export function toRelativeTime(dateString: string): string {
-  const diffSec = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
+export function toRelativeTime(dateString: string, now: number = Date.now()): string {
+  const diffSec = Math.floor((now - new Date(dateString).getTime()) / 1000);
 
   if (diffSec < 60) return 'چند لحظه پیش';
   if (diffSec < 3600) return `${toPersian(Math.floor(diffSec / 60))} دقیقه پیش`;
