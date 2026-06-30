@@ -25,14 +25,19 @@ export default async function QuestionSlug({ params }: QuestionSlugProps) {
   }
 
   return (
+    // Question detail page container
     <div className="container mx-auto">
+      {/* Back navigation link */}
       <HeaderTitle />
+      {/* Main layout: question details + related questions sidebar */}
       <div className="flex xl:flex-row flex-col-reverse items-start">
-        <div className="xl:w-3/12 w-full xl:sticky xl:top-10 xl:pb-0 pb-10">
+        {/* Sidebar with related questions */}
+        <aside className="xl:w-3/12 w-full xl:sticky xl:top-10 xl:pb-0 pb-10">
           <Suspense fallback={<RelatedQuestionsSkeleton />}>
             <QuestionsRelated id={id} />
           </Suspense>
-        </div>
+        </aside>
+        {/* Question detail and answers panel */}
         <div className="xl:w-9/12 w-full pb-10">
           <Suspense fallback={<QuestionDetailsSkeleton />}>
             <QuestionDetails id={id} />

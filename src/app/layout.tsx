@@ -21,10 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // Root HTML document with RTL Persian layout
     <html lang="fa" dir="rtl" className={`${vazirmatn.variable} h-full antialiased`}>
       <body>
+        {/* React Query provider wrapping the full app */}
         <QueryProvider>
+          {/* Site-wide navigation bar */}
           <Navbar />
+          {/* Main content area with toast notifications */}
           <ToasterLayout>{children}</ToasterLayout>
         </QueryProvider>
       </body>

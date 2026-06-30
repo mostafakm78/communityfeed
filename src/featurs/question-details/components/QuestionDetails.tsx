@@ -17,8 +17,11 @@ const QuestionDetails = async ({ id }: { id: string }) => {
   }
 
   return (
+    // Question detail section: card + answers
     <section className="px-6">
+      {/* Question content card */}
       <QuestionCard content={question.content} book={question.book} author={question.user.full_name} created_at={question.created_at} />
+      {/* Answers list below the question */}
       <AnswerList answers={question.answers} />
     </section>
   );

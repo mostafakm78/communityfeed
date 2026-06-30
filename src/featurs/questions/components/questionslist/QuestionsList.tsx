@@ -20,9 +20,12 @@ const QuestionsList = async () => {
   });
 
   return (
+    // Questions list section with SSR-hydrated infinite scroll
     <section className="px-6">
+      {/* Total questions count header */}
       <QuestionsListHeader questionsLength={firstPage.count} />
 
+      {/* Client-side infinite list with pre-fetched first page */}
       <HydrationBoundary state={dehydrate(queryClient)}>
         <QuestionsListClient now={now} />
       </HydrationBoundary>

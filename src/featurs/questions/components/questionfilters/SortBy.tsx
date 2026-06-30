@@ -15,20 +15,25 @@ const SortBy = () => {
   };
 
   return (
+    // Sort widget card
     <div className="bg-secondary flex gap-y-4 flex-col p-6 rounded-xl w-full">
-      <span>مرتب‌سازی براساس:</span>
-      <Link
-        href={buildSortHref('newest')}
-        className={cn(sortby === 'newest' && 'bg-blue-300 rounded py-1 px-2')}
-      >
-        جدیدترین
-      </Link>
-      <Link
-        href={buildSortHref('most-asnwered')}
-        className={cn(sortby === 'most-asnwered' && 'bg-blue-300 rounded py-1 px-2')}
-      >
-        پرپاسخ ترین‌ها
-      </Link>
+      {/* Widget label */}
+      <p>مرتب‌سازی براساس:</p>
+      {/* Sort option links */}
+      <nav className="flex flex-col gap-y-4">
+        <Link
+          href={buildSortHref('newest')}
+          className={cn(sortby === 'newest' && 'bg-blue-300 rounded py-1 px-2')}
+        >
+          جدیدترین
+        </Link>
+        <Link
+          href={buildSortHref('most-asnwered')}
+          className={cn(sortby === 'most-asnwered' && 'bg-blue-300 rounded py-1 px-2')}
+        >
+          پرپاسخ ترین‌ها
+        </Link>
+      </nav>
     </div>
   );
 };

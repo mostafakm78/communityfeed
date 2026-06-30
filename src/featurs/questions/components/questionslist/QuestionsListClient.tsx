@@ -25,11 +25,13 @@ const QuestionsListClient = ({ now }: { now: number }) => {
 
   const [showSpinner, setShowSpinner] = useState(false);
 
+  // Delay showing the spinner to avoid a flash for fast page loads
   useEffect(() => {
     const timeout = setTimeout(() => setShowSpinner(isFetchingNextPage), isFetchingNextPage ? 400 : 0);
     return () => clearTimeout(timeout);
   }, [isFetchingNextPage]);
 
+  // Observe the sentinel element and fetch the next page when it enters the viewport
   useEffect(() => {
     const node = loadMoreRef.current;
     if (!node) return;
@@ -44,6 +46,7 @@ const QuestionsListClient = ({ now }: { now: number }) => {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  // Initial loading state
   if (status === 'pending') {
     return (
       <div className="flex items-center">
@@ -53,16 +56,19 @@ const QuestionsListClient = ({ now }: { now: number }) => {
     );
   }
 
+  // Error state
   if (status === 'error') {
     return <p className="text-center py-10 text-destructive">خطا در دریافت سوالات</p>;
   }
 
   let items: QuestionApiItem[] = data.pages.flatMap((page) => page.results);
 
+  // Apply tag filter
   if (tags.length > 0) {
     items = items.filter((item) => item.book && tags.includes(item.book));
   }
 
+  // Apply sort order
   items = [...items].sort((a, b) =>
     sortby === 'most-asnwered'
       ? b.answers.length - a.answers.length
@@ -80,18 +86,25 @@ const QuestionsListClient = ({ now }: { now: number }) => {
   }));
 
   return (
-    <div className="flex flex-col lg:gap-y-3 gap-y-10">
-      {questions.map((item) => (
-        <QuestionCard key={item.id} {...item} />
-      ))}
+    <>
+      {/* Ordered list of question cards */}
+      <ul className="flex flex-col lg:gap-y-3 gap-y-10">
+        {questions.map((item) => (
+          <li key={item.id}>
+            <QuestionCard {...item} />
+          </li>
+        ))}
+      </ul>
+      {/* Intersection observer sentinel for infinite scroll */}
       <div ref={loadMoreRef} />
+      {/* Load-more spinner shown after a brief delay */}
       {showSpinner && (
         <div className="flex items-center justify-center">
           <p className="text-center py-10 text-muted-foreground">در حال بارگذاری...</p>
           <Spinner />
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -17,10 +17,12 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { postQuestion } from '../api/postQuestion';
 
+// SelectBook is lazy-loaded with a skeleton fallback while the chunk loads
 const SelectBook = dynamic(() => import('./SelectBook').then((mod) => mod.SelectBook), {
   loading: () => <Skeleton className="h-8 w-full max-w-48 rounded-lg" />,
 });
 
+// Zod schema: validation rules for title, description, and book fields
 const formSchema = z.object({
   title: z.string().min(10, 'عنوان نمیتواند کمتر از ١٠ کارکتر باشد').max(120, 'عنوان نمیتواند بیشتر از ١٢٠ کارکتر باشد'),
   description: z.string().min(50, 'توضیحات باید حداقل ٥٠ کارکتر باشد').max(3000, 'توضیحات شما نباید بیشتر از ٣٠٠٠ باشد'),
@@ -29,6 +31,7 @@ const formSchema = z.object({
 
 export function NewAnswerForm() {
   const router = useRouter();
+  // Form state with Zod validation resolver and empty default values
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,6 +41,7 @@ export function NewAnswerForm() {
     },
   });
 
+  // POST mutation: shows success toast and redirects to home, or shows error toast
   const { mutate, isPending } = useMutation({
     mutationFn: postQuestion,
     onSuccess: () => {
@@ -50,14 +54,19 @@ export function NewAnswerForm() {
     },
   });
 
+  // Combines title and description into a single content string before submitting
   function onSubmit(data: z.infer<typeof formSchema>) {
     mutate({ content: `${data.title}\n\n${data.description}`, book: data.book });
   }
 
   return (
+    // New question submission form
     <form className="xl:w-2/3 w-full px-6 pb-10" id="new-answer-form" onSubmit={form.handleSubmit(onSubmit)}>
-      <span className="text-2xl font-bold block mb-8">ساخت سوال</span>
+      {/* Page heading */}
+      <h1 className="text-2xl font-bold block mb-8">ساخت سوال</h1>
+      {/* Form fields: title, description, book */}
       <FieldGroup>
+        {/* Title field */}
         <Controller
           name="title"
           control={form.control}
@@ -71,6 +80,7 @@ export function NewAnswerForm() {
             </Field>
           )}
         />
+        {/* Description field with character counter */}
         <Controller
           name="description"
           control={form.control}
@@ -89,6 +99,7 @@ export function NewAnswerForm() {
             </Field>
           )}
         />
+        {/* Book selection field */}
         <Controller
           name="book"
           control={form.control}
@@ -103,6 +114,7 @@ export function NewAnswerForm() {
           )}
         />
       </FieldGroup>
+      {/* Form action buttons: submit and cancel */}
       <div className="w-full flex items-center justify-between mt-10">
         <Button type="submit" disabled={isPending} className="h-12.5 w-37.5 text-xl">
           {isPending ? 'در حال ارسال...' : 'ارسال سوال'}

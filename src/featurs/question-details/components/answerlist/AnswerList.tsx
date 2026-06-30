@@ -5,12 +5,19 @@ import AnswerCard from './AnswerCard';
 
 const AnswerList = ({ answers }: { answers: QuestionDetailAnswer[] }) => {
   return (
+    // Answers section below the question card
     <section>
+      {/* Total answer count */}
       <AnswerCount count={answers.length} />
       <Separator />
-      {answers.map((answer) => (
-        <AnswerCard key={answer.id} content={answer.content} />
-      ))}
+      {/* List of answer cards */}
+      <ul>
+        {answers.map((answer) => (
+          <li key={answer.id}>
+            <AnswerCard content={answer.content} />
+          </li>
+        ))}
+      </ul>
     </section>
   );
 };

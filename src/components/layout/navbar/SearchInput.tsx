@@ -17,8 +17,9 @@ const SearchInput = () => {
   const [hasError, setHasError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
+  // Debounced search: fires after the user stops typing; cancels in-flight requests on each keystroke
   useEffect(() => {
     const trimmedQuery = query.trim();
 
@@ -52,6 +53,7 @@ const SearchInput = () => {
     };
   }, [query]);
 
+  // Close the dropdown when the user clicks outside the search container
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -64,8 +66,11 @@ const SearchInput = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative md:w-125 w-full h-full">
+    // Search landmark containing the input and live results
+    <search ref={containerRef} className="relative md:w-125 w-full h-full">
+      {/* Search icon decorating the input */}
       <Search className="absolute size-4 md:size-5 right-3 top-1/2 -translate-y-1/2" />
+      {/* Controlled search input with debounce */}
       <Input
         value={query}
         onChange={(e) => {
@@ -84,32 +89,38 @@ const SearchInput = () => {
         placeholder="سوال رو جستجو کن..."
       />
 
+      {/* Dropdown results list */}
       {isOpen && (
-        <div className="absolute top-full mt-2 w-full bg-secondary border border-foreground/20 rounded-xl shadow-lg max-h-80 overflow-y-auto z-50">
+        <ul className="absolute top-full mt-2 w-full bg-secondary border border-foreground/20 rounded-xl shadow-lg max-h-80 overflow-y-auto z-50">
           {isLoading ? (
-            <div className="flex items-center justify-center gap-2 py-4 text-xs text-muted-foreground">
+            // Loading indicator
+            <li className="flex items-center justify-center gap-2 py-4 text-xs text-muted-foreground">
               <Spinner />
               در حال جستجو...
-            </div>
+            </li>
           ) : hasError ? (
-            <p className="py-4 text-center text-xs text-destructive">خطا در جستجو</p>
+            // Error message
+            <li className="py-4 text-center text-xs text-destructive">خطا در جستجو</li>
           ) : results.length === 0 ? (
-            <p className="py-4 text-center text-xs text-muted-foreground">نتیجه‌ای یافت نشد</p>
+            // Empty state
+            <li className="py-4 text-center text-xs text-muted-foreground">نتیجه‌ای یافت نشد</li>
           ) : (
+            // Result links
             results.map((item) => (
-              <Link
-                key={item.id}
-                href={`/${item.id}`}
-                onClick={() => setIsOpen(false)}
-                className="block truncate px-4 py-2 text-xs transition-colors hover:bg-background"
-              >
-                {item.content}
-              </Link>
+              <li key={item.id}>
+                <Link
+                  href={`/${item.id}`}
+                  onClick={() => setIsOpen(false)}
+                  className="block truncate px-4 py-2 text-xs transition-colors hover:bg-background"
+                >
+                  {item.content}
+                </Link>
+              </li>
             ))
           )}
-        </div>
+        </ul>
       )}
-    </div>
+    </search>
   );
 };
 

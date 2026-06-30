@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+// Merges Tailwind class names, resolving conflicts with twMerge
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -11,10 +12,12 @@ export function getNow(): number {
   return Date.now();
 }
 
+// Converts ASCII digits to Persian-Indic numerals (e.g. 5 → ۵)
 export function toPersian(n: number): string {
   return String(n).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[+d]);
 }
 
+// Returns a human-readable Persian relative time string from an ISO date
 export function toRelativeTime(dateString: string, now: number = Date.now()): string {
   const diffSec = Math.floor((now - new Date(dateString).getTime()) / 1000);
 

@@ -5,8 +5,11 @@ const NewAnswerForm = dynamic(() => import('@/featurs/new-answer/components/NewA
 
 export default function NewAnswer() {
   return (
+    // New question submission page
     <div className="container mx-auto">
+      {/* Back navigation link */}
       <HeaderTitle />
+      {/* Form wrapper */}
       <div className="flex items-start">
         <NewAnswerForm />
       </div>
