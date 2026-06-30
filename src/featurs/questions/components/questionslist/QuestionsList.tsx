@@ -1,11 +1,13 @@
 import { dehydrate, HydrationBoundary, InfiniteData, QueryClient } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import { getNow } from '@/lib/utils';
 import { getQuestionsCached } from '../../api/getQuestionsCached';
 import { QUESTIONS_ENDPOINT } from '../../api/getQuestions';
 import { questionsInfiniteQueryOptions } from '../../api/questionsQuery';
 import { QuestionsApiResponse } from '../../types/questions';
-import QuestionsListClient from './QuestionsListClient';
 import QuestionsListHeader from './questioncard/QuestionsListHeader';
+
+const QuestionsListClient = dynamic(() => import('./QuestionsListClient'));
 
 const QuestionsList = async () => {
   const queryClient = new QueryClient();

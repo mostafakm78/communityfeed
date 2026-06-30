@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
@@ -11,11 +10,16 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from '@/components/ui/input-group';
+import { Skeleton } from '@/components/ui/skeleton';
 import { toPersian } from '@/lib/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { SelectBook } from './SelectBook';
+import dynamic from 'next/dynamic';
 import { postQuestion } from '../api/postQuestion';
+
+const SelectBook = dynamic(() => import('./SelectBook').then((mod) => mod.SelectBook), {
+  loading: () => <Skeleton className="h-8 w-full max-w-48 rounded-lg" />,
+});
 
 const formSchema = z.object({
   title: z.string().min(10, 'عنوان نمیتواند کمتر از ١٠ کارکتر باشد').max(120, 'عنوان نمیتواند بیشتر از ١٢٠ کارکتر باشد'),

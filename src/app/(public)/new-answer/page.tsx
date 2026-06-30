@@ -1,5 +1,7 @@
+import dynamic from 'next/dynamic';
 import HeaderTitle from '@/components/shared/HeaderTitle';
-import { NewAnswerForm } from '@/featurs/new-answer/components/NewAnswerForm';
+
+const NewAnswerForm = dynamic(() => import('@/featurs/new-answer/components/NewAnswerForm').then((mod) => mod.NewAnswerForm));
 
 export default function NewAnswer() {
   return (

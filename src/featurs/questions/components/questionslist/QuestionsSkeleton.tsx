@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const QuestionCardSkeleton = () => {
+export const QuestionCardSkeleton = () => {
   return (
     <div className="w-full relative flex lg:flex-row flex-col gap-x-6 min-h-50 shrink-0 rounded-xl bg-secondary border border-foreground/20 p-4 max-lg:pt-10">
       <Skeleton className="lg:h-20 lg:w-20 w-20 max-lg:absolute max-lg:-top-6 h-10 lg:my-auto rounded-xl" />

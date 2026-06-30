@@ -3,11 +3,16 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { toRelativeTime } from '@/lib/utils';
 import { questionsInfiniteQueryOptions } from '../../api/questionsQuery';
 import { QuestionApiItem, QuestionCardProps } from '../../types/questions';
-import QuestionCard from './questioncard/QuestionCard';
+import { QuestionCardSkeleton } from './QuestionsSkeleton';
 import { Spinner } from '@/components/ui/spinner';
+
+const QuestionCard = dynamic(() => import('./questioncard/QuestionCard'), {
+  loading: () => <QuestionCardSkeleton />,
+});
 
 const QuestionsListClient = ({ now }: { now: number }) => {
   const searchParams = useSearchParams();
